@@ -13,6 +13,8 @@ type Standard struct {
 }
 
 func (r Standard) Analyze(results <-chan Result) {
+	r.Start = time.Now()
+
 	var total int64
 	var numberOfErrors int
 	var sumOfDurations time.Duration
@@ -50,6 +52,6 @@ func (r Standard) Analyze(results <-chan Result) {
 	fmt.Fprintf(r.Writer, "minimum response time: %s\n", minimumDuration)
 }
 
-func NewStandardReporter(writer io.Writer, start time.Time) *Standard {
-	return &Standard{Writer: writer, Start: start}
+func NewStandardReporter(writer io.Writer) *Standard {
+	return &Standard{Writer: writer}
 }

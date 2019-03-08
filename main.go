@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"sync"
-	"time"
 
 	"github.com/amir-yaghoobi/floodly/generator"
 	"github.com/amir-yaghoobi/floodly/reporter"
@@ -61,7 +60,7 @@ func main() {
 	}
 
 	genSrv := user.NewUserGenerator(*userRepository)
-	repSrv := reporter.NewStandardReporter(os.Stdout, time.Now())
+	repSrv := reporter.NewStandardReporter(os.Stdout)
 
 	srvRunner := &runner{
 		generatorSrv: genSrv,
