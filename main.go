@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"flag"
 	"log"
 	"os"
 	"sync"
@@ -41,13 +42,20 @@ func (r *runner) Run(total int, concurrency int) {
 }
 
 func main() {
-	db, err := sql.Open("crate", "http://localhost:4200/")
+	dbUrl := flag.String("db", "http://localhost:4200/", "crateDB url")
+	total := flag.Int("total", 1000, "total number of inserts")
+	concurrency := flag.Int("concurrency", 1000, "number of concurrent workers")
+	dropTable := flag.Bool("drop-table", false, "drop database table")
+
+	flag.Parse()
+
+	db, err := sql.Open("crate", *dbUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	userRepository := repository.NewCrateRepository(db)
-	err = userRepository.Migrate(true)
+	err = userRepository.Migrate(*dropTable)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -60,5 +68,5 @@ func main() {
 		reportSrv:    repSrv,
 	}
 
-	srvRunner.Run(5000, 500)
+	srvRunner.Run(*total, *concurrency)
 }
