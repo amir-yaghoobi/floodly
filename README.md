@@ -1,6 +1,6 @@
 # Floodly
 
-Simple `CrateDB` load testing tool
+Simple `CreateDB` load testing tool
 
 ## Installation
 
